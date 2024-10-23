@@ -34,7 +34,7 @@ export default {
             dohURL = env.DNS_RESOLVER_URL || dohURL;
             trojanPassword = env.TROJAN_PASS || trojanPassword;
             hashPassword = sha256.sha224(trojanPassword);
-	    fakeHost = env.FAKE_HOST || fakeHost;
+	    fakeHost = env.FH || fakeHost;
 		
             if (!isValidUUID(userID)) throw new Error(`Invalid UUID: ${userID}`);
             const upgradeHeader = request.headers.get('Upgrade');
