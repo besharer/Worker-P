@@ -9,6 +9,8 @@ import { SignJWT, jwtVerify } from 'jose';
 let userID = '89b3cbba-e6ac-485a-9481-976a0415eab9';
 let trojanPassword = `bpb-trojan`;
 
+let fakeHost = 'www.speedtest.net';
+
 // https://www.nslookup.io/domains/bpb.yousef.isegaro.com/dns-records/
 const proxyIPs= ['bpb.yousef.isegaro.com'];
 const defaultHttpPorts = ['80', '8080', '2052', '2082', '2086', '2095', '8880'];
@@ -32,6 +34,8 @@ export default {
             dohURL = env.DNS_RESOLVER_URL || dohURL;
             trojanPassword = env.TROJAN_PASS || trojanPassword;
             hashPassword = sha256.sha224(trojanPassword);
+	    fakeHost = env.FACK_HOST || fakeHost;
+		
             if (!isValidUUID(userID)) throw new Error(`Invalid UUID: ${userID}`);
             const upgradeHeader = request.headers.get('Upgrade');
             const url = new URL(request.url);
@@ -276,7 +280,7 @@ export default {
 
                     default:
                         // return new Response('Not found', { status: 404 });
-                        url.hostname = env.FAKE_HOST || 'www.speedtest.net';
+                        url.hostname = fakeHost;
                         url.protocol = 'https:';
                         request = new Request(url, request);
                         return await fetch(request);
